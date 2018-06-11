@@ -1,0 +1,1 @@
+from mongo_wrapper import get_fingerprints
