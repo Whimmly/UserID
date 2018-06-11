@@ -1,9 +1,13 @@
-import os
-import logging
 from pymongo import MongoClient
+import os
 
-host = '35.174.77.181'
-port = 27016
+
+if os.path.exists('/.dockerenv'):
+  host = '35.174.77.181'
+  port = 27016
+else:
+  host = 'localhost'
+  port = 27017
 client = MongoClient(host, port)
 user_db = client['user']
 fingerprints_col = user_db["fingerprints"]

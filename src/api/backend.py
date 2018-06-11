@@ -1,4 +1,4 @@
-from flask import request, jsonify, Flask, abort
+from flask import request, jsonify, Flask
 from flask_cors import CORS
 from ..main import validate_uid
 
@@ -13,8 +13,8 @@ def api_validate_uid():
   success, uid = validate_uid(request.json["fingerprint"])
   return jsonify({"success": success, "uid": uid})
 
+
 if __name__ == "__main__":
   print('Flask app running at 0.0.0.0:8891')
   app.run(host='0.0.0.0', port=8891)
-
 

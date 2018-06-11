@@ -11,7 +11,7 @@ def test_fingerprint(target, model, threshold):
     matches, feature_vector = featurize(fingerprint, target)
     for filter_ in filters["confident"]:
       if filter_(matches):
-        return confident[fingerprint["uid"]]
+        return fingerprint["uid"]
     for filter_ in filters["probable"]:
       if filter_(matches):
         probable[fingerprint["uid"]] = feature_vector
@@ -23,13 +23,19 @@ def test_fingerprint(target, model, threshold):
   if len(probable) is not 0:
     for uid, feature in probable:
       probable[uid] = model.score(feature)
-    best_uid = sort(probable.items(), key=lambda x: x[1])[0]
+    best_uid = sorted(probable.items(), key=lambda x: x[1])[0]
     return best_uid
   if len(plausible) is not 0:
-    best_uid, best_score = sort(probable.items(), key=lambda x: x[1])
+    best_uid, best_score = sorted(probable.items(), key=lambda x: x[1])
     return best_uid if best_score > threshold else None
   return None
 
 
 def validate_uid(fingerprint):
-  pass
+  dummy_model = lambda x: 1
+  uid = test_fingerprint(fingerprint, dummy_model, 0.5)
+  if uid is None:
+    return False, fingerprint["uid"]
+  else:
+    return True, uid
+
